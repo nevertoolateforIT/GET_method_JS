@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>GET method</h1>
+    <form id ="gif-form">
+        <div>
+            SEARCH GIFs:
+            <input type="text" class="search">
+            <input type="submit"></input>
+        </div>
+    </form>
+    <div class ="results"></div>
+    <script>
+
+        let APIKEY = "9a64A2GDR9Xa7YWV2Sd3M4u1FMH6ggIa";
+        const gform =document.querySelector("#gif-form");
+        gform.addEventListener("submit",findGifs);
+
+        function findGifs(e){
+            e.preventDefault();
+            let search=document.querySelector(".search").value;
+            fetch (`https://api.giphy.com/v1/gifs/search?&q=${search}&limit=5&api_key=${APIKEY}`)
+            .then(response =>response.json())
+                .then(content => {
+                    let dataArray=content.data
+                    showGifs(dataArray);
+                })
+                .catch(error=>colsole.log(error));
+            }
+
+            function showGifs(dataArray){
+                let results=document.querySelector(".results");
+                let output='<div class="container">';
+                dataArray.forEach((imgData) => {
+                    output +=`<img src="${imgData.images.fixed_width.url}"/>`;
+                });
+                document.querySelector('.results').innerHTML =output;
+            }
+          
+    </script>
+</body>
+</html>
